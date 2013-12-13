@@ -44,5 +44,6 @@ create-message = (useful-info)->
 <-! http.create-server(app).listen app.get 'port'
 console.log 'Express sever listening on port ' + app.get 'port'
 
+get-weather!
 <-! set-interval _, 1000*3600*12
 get-weather!
