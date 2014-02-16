@@ -42,8 +42,8 @@ module.exports = (grunt)->
       test:
         files: [
           expand: true
-          flatten: true
-          cwd: 'test'
+          flatten: false
+          cwd: 'test-temp/'
           src: ['**/*.ls']
           dest: 'test-bin'
           ext: '.js'
@@ -54,6 +54,12 @@ module.exports = (grunt)->
         tasks: ['concat', 'livescript']
         options:
           spawn: true
+    simplemocha:
+      all: 
+        src: ['test-bin/**/test-*.js']
+        options:
+          timeout: 3000
+          reporter: 'spec'
     nodemon:
       all:
         options:
@@ -77,7 +83,7 @@ module.exports = (grunt)->
   grunt.loadNpmTasks "grunt-contrib-copy"
 
   grunt.registerTask "default", ["clean", "copy", "concat:src", "livescript",  'concurrent']
-  grunt.registerTask "test", ["clean", "copy", "concat:test", "livescript:test",  'concurrent']
+  grunt.registerTask "test", ["clean", "copy", "concat:test", "livescript:test",  'simplemocha']
 
   grunt.event.on 'watch', (action, filepath)->
     console.log 'filepath: ', filepath
