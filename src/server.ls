@@ -7,8 +7,8 @@ configure-server = !->
 
 initial-services = !->
   #require('./routes/index')(app)
-  #require('./routes/users')(app)
-  #require('./routes/weather')(app)
+  require('./routes/users')(app)
+  require('./routes/weather')(app)
 
 module.exports =
   start: !->

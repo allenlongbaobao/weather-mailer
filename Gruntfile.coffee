@@ -9,6 +9,8 @@ module.exports = (grunt)->
         files: [expand: true, src: ['test'], dest: 'test-bin/']
     concat:
       src:
+        options:
+          banner: "debug = require('debug')('at-plus')\n"
         files: [
           expand: true
           cwd: 'src'

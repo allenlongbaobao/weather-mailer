@@ -10,7 +10,7 @@ send-mail = (weather-info)->
 create-message = (useful-info)->
   message = useful-info.city + "今天的天气为："+  useful-info.weather + " 最低温度：" + useful-info.temp2 + ", 最高温度： " + useful-info.temp1
 
-get-weather = !->
+getweather = !->
   options =
     hostname: 'www.weather.com.cn'
     port: 80
@@ -34,5 +34,14 @@ get-weather = !->
 
   req.end!
 
-module.exports = !(server)->
-  get-weather!
+module.exports =
+  get-weather: !(req, res)->
+    res.end 'hh'
+
+  subscribe-weather: !(req, res, next)->
+    res.end 'subscribe weather success!'
+    next!
+
+  cancel-subscribe: !(req, res, next)->
+    res.en 'cancel subscribe success!'
+    next!
