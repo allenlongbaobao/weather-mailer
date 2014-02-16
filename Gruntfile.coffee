@@ -1,3 +1,4 @@
+fs = require 'fs'
 module.exports = (grunt)-> 
   process.env.DEBUG = 'dust'
   grunt.initConfig
@@ -6,16 +7,26 @@ module.exports = (grunt)->
       main:
         files: [expand: true, cwd: 'resource/', src: ['src'], dest: 'bin/']
       test:
-        files: [expand: true, src: ['test'], dest: 'test-bin/']
+        files: [expand: true, cwd: 'test', src: ['fixtures/**'], dest: 'test-bin/']
     concat:
       src:
         options:
-          banner: "debug = require('debug')('at-plus')\n"
+          banner: "debug = require('debug')('weather-mailer')\n"
         files: [
           expand: true
           cwd: 'src'
           src: ['**/*.ls']
           dest: 'src-temp/'
+          ext: '.ls'
+        ]
+      test:
+        options: 
+          banner: fs.readFileSync('test/header.ls', 'utf-8')
+        files: [
+          expand: true
+          cwd: 'test'
+          src: ['**/test-*.ls']
+          dest: 'test-temp/'
           ext: '.ls'
         ]
     livescript:
@@ -66,7 +77,7 @@ module.exports = (grunt)->
   grunt.loadNpmTasks "grunt-contrib-copy"
 
   grunt.registerTask "default", ["clean", "copy", "concat:src", "livescript",  'concurrent']
-
+  grunt.registerTask "test", ["clean", "copy", "concat:test", "livescript:test",  'concurrent']
 
   grunt.event.on 'watch', (action, filepath)->
     console.log 'filepath: ', filepath
