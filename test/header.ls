@@ -1,6 +1,8 @@
 debug = require('debug')('weather-mailer')
-require! [should]
+require! [http, should, '../../bin/config/config', '../helper']
 
-#base-url = "http:localhost:#{config.port}"
+base-url = "http://localhost:#{config.port}"
 
 can = it
+
+

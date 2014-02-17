@@ -7,7 +7,7 @@ module.exports = (grunt)->
       main:
         files: [expand: true, cwd: 'resource/', src: ['src'], dest: 'bin/']
       test:
-        files: [expand: true, cwd: 'test', src: ['fixtures/**'], dest: 'test-bin/']
+        files: [expand: true, cwd: 'test', src: ['fixtures/**', 'helper.ls'], dest: 'test-temp/']
     concat:
       src:
         options:
@@ -83,7 +83,7 @@ module.exports = (grunt)->
   grunt.loadNpmTasks "grunt-contrib-copy"
 
   grunt.registerTask "default", ["clean", "copy", "concat:src", "livescript",  'concurrent']
-  grunt.registerTask "test", ["clean", "copy", "concat:test", "livescript:test",  'simplemocha']
+  grunt.registerTask "test", ["copy", "concat:test", "livescript:test",  'simplemocha']
 
   grunt.event.on 'watch', (action, filepath)->
     console.log 'filepath: ', filepath

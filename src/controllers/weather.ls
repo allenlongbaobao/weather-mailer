@@ -1,4 +1,4 @@
-require! 'http'
+require! ['http', '../business/weather']
 
 send-mail = (weather-info)->
   console.log weather-info
@@ -36,7 +36,9 @@ getweather = !->
 
 module.exports =
   get-weather: !(req, res)->
-    res.end 'hh'
+    location = req.query.location
+    (new-weather) <-! weather.get-weather location
+    res.end JSON.stringify new-weather
 
   subscribe-weather: !(req, res, next)->
     res.end 'subscribe weather success!'

@@ -1,4 +1,5 @@
 describe '获取天气， 返回查询地点的天气信息', !(done)->
+  get-weather-url = '/get-weather'
   before !(done)->
     done!
 
@@ -9,4 +10,12 @@ describe '获取天气， 返回查询地点的天气信息', !(done)->
     done!
 
   can '提供地点， 服务器返回对应的天气信息', !(done)->
+    request-data = {path: get-weather-url + '?location=诸暨'}
+    helper.get request-data, !(data)->
+      data.should.have.property 'city'
+      data.should.have.property 'cityid'
+      data.should.have.property 'weather'
+      done!
+
+  can '当提供的地点无法查询时， 服务器响应402', !(done)->
     done!
