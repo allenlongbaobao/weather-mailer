@@ -6,7 +6,7 @@ module.exports =
     host: 'localhost'
     port: 27017
     write-concern: -1
-    collections: ['']
+    collections: ['cityis', 'users']
 
   #third-party-account:
     #TODO
