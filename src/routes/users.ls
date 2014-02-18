@@ -1,4 +1,4 @@
-require! ['../controllers/users']
+require! ['../controllers/users', '../utils/database']
 
 module.exports = !(app)->
 

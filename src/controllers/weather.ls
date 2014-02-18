@@ -10,35 +10,14 @@ send-mail = (weather-info)->
 create-message = (useful-info)->
   message = useful-info.city + "今天的天气为："+  useful-info.weather + " 最低温度：" + useful-info.temp2 + ", 最高温度： " + useful-info.temp1
 
-getweather = !->
-  options =
-    hostname: 'www.weather.com.cn'
-    port: 80
-    path: '/data/cityinfo/101210502.html'
-    method: 'GET'
 
-  req = http.request options, !(res)->
-    result = ''
-    res.set-encoding 'utf-8'
-    res.on 'data', !(chunk)->
-      result += chunk
-
-    res.on 'end', !->
-      send-mail JSON.parse result
-
-    res.on 'error', !(err)->
-      console.log err
-
-  req.on 'error', !(err)->
-    console.log err
-
-  req.end!
 
 module.exports =
   get-weather: !(req, res)->
     location = req.query.location
     (new-weather) <-! weather.get-weather location
-    res.end JSON.stringify new-weather
+    response = {result: 'success'} <<< new-weather
+    res.end JSON.stringify response
 
   subscribe-weather: !(req, res, next)->
     res.end 'subscribe weather success!'
