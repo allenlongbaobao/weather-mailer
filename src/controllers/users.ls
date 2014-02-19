@@ -1,6 +1,11 @@
+require! ['../business/users']
+
 module.exports =
   create: !(req, res)->
-    res.end 'create success'
+    (result) <-! users.register req
+    if (err = result) instanceof Error then
+      res.send {result: 'failed', errors: [err.message]}
+    else res.send {result: 'success', errors: []}
 
   me: !(req, res)->
     res.end 'me success'
