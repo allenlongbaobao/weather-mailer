@@ -28,7 +28,8 @@ get-weather-info = !(cid, callback)->
 
 get-city-id = !(location, callback)->
   (results) <-! db.query-collection 'cities', {name: location}
-  callback results[0].cid
+  if results.length is 0 then callback new Error 'city data is not existed!'
+  else callback results[0].cid
 
 get-new-weather-info = !(city-id, callback)->
   (weather-info) <-! get-weather-info city-id
@@ -37,7 +38,7 @@ get-new-weather-info = !(city-id, callback)->
 module.exports =
   get-weather: !(location, callback)->
     (city-id) <-! get-city-id location
-    unless typeof (city-err = city-id) is Error
+    unless (city-err = city-id) instanceof Error
       (new-weather-info) <-! get-new-weather-info city-id
       callback new-weather-info
     else callback city-err

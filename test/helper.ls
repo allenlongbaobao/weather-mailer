@@ -1,4 +1,5 @@
 require! ['http', '../bin/config/config']
+_ = require 'underscore'
 
 options =
   hostname: 'localhost'
@@ -20,17 +21,31 @@ get-data-and-callback = !(res, callback)->
   res.on 'error', !(err)->
     console.log err
 
+turn-request-data-into-path = !(method, request-data, callback)->
+  path = method + '?'
+  _.each request-data, !(value, key, list)->
+    path += key + '=' + value
+  callback path
+
 module.exports =
-  get: !(request-data, callback)->
-    get-options = options <<< request-data <<< {method: 'GET'}
+  get: !(method, request-data, callback)->
+    (path) <-! turn-request-data-into-path method, request-data
+    get-options = options <<< {path: path, method: 'GET'}
     req = http.request get-options, !(res)->
       get-data-and-callback res, callback
     req.on 'error', !(err)->
       console.log err
     req.end!
 
+  post: !(method, request-data, callback)->
+    (path) <-! turn-request-data-into-path method, request-data
+    get-options = options <<< {path: path, method: 'POST'}
+    req = http.request get-options, !(res)->
+      get-data-and-callback res, callback
+    req.on 'error', !(err)->
+      console.log err
+    req.end!
   #TODO
-  #post: 
   #del:
   #put:
 
