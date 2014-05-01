@@ -1,7 +1,6 @@
 require! ['http', '../business/weather', '../business/module/mail-module']
 
 send-mail = (weather-info)->
-  console.log weather-info
   useful-info = weather-parse-module.get-useful-info weather-info.weatherinfo
   message = create-message useful-info
   mail-sender = new mail-module.mail-sender message
@@ -17,7 +16,6 @@ subscribe-weather-by-email = !(request)->
   <-! send-mail new-weather
 
 subscribe-weather = !(request, callback)->
-  console.log request.body
   for type in request.push-type then
     if type is 'email' then subscribe-weather-by-email request
     if type is 'message' then subscribe-weather-by-message request
@@ -25,7 +23,7 @@ subscribe-weather = !(request, callback)->
   callback!
 
 module.exports =
-  get-weather: !(req, res)->
+  get-weather: !(req, res, next)->
     location = req.query.location
     (new-weather) <-! weather.get-weather location
     if (err = new-weather) instanceof Error then response = {result: 'failed', errors: err.message}

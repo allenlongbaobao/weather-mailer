@@ -11,18 +11,12 @@ describe '订阅天气测试', !(done)->
     done!
 
   can '用户选择邮箱订阅， 邮箱格式正确， 返回成功订阅信息', !(done)->
-    #request-data = {email: '1061050073@qq.com'}
-    #helper.post method, request-data, !(data)->
-    #  console.log data
-    #  done!
     url = base-url + method
-    request-data = 
+    request-data =
       location: '广州'
       push-type: ['email']
-    request.post url, request-data, !(err, res, body)->
-
+    request.post url, {form: request-data}, !(err, res, body)->
       done!
-
 
   can '用户邮箱成功订阅后， 能够收到天气内容', !(done)->
     done!
